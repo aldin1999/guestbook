@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: guestbook-app-pipelinerun
+spec:
+  pipelineRef:
+    name: guestbook-app-pipeline
+  workspaces:
+    - name: shared-workspace
+      persistentVolumeClaim:
+        claimName: tax-pvc
+  serviceAccountName: pipeline
+  timeout: "1h0m0s"

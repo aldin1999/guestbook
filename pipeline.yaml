@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: guestbook-app-pipeline
+spec:
+  workspaces:
+    - name: shared-workspace
+  tasks:
+    - name: npminstall
+      taskRef:
+        name: npm-install
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: tests
+      runAfter:
+        - npminstall
+      taskRef:
+        name: run-jasmine-tests
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: build
+      runAfter:
+        - tests
+      taskRef:
+        name: docker-build
+      workspaces:
+        - name: source
+          workspace: shared-workspace

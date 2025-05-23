@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guestbook
+  template:
+    metadata:
+      labels:
+        app: guestbook
+    spec:
+      imagePullSecrets:
+        - name: all-icr-io  
+      containers:
+        - name: guestbook
+          image: de.icr.io/guestbook-namespace/guestbook-app:v1
+          ports:
+            - containerPort: 80
